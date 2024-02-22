@@ -1,1 +1,3 @@
-# text_emotion_recognition
+# text-emotion-recognition
+
+https://text-review-emotion-recognition.streamlit.app/
