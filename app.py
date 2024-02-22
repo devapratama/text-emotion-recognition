@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 import openpyxl
 from io import BytesIO
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Definisi lapisan kustom dengan dekorator untuk serialisasi
 @tf.keras.utils.register_keras_serializable()
@@ -214,3 +216,29 @@ with tab2:
                 mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 key="predictions-excel"
             )
+
+        # Generate a bar chart of emotion predictions with counts and different colors
+        fig, ax = plt.subplots()
+        barplot = sns.countplot(x='Emotion Prediction', data=results, ax=ax, palette='viridis')
+        ax.set_title('Distribution of Predicted Emotions')
+
+        # Add count labels to the top of the bars
+        for p in barplot.patches:
+            # Round the count to the nearest integer and format
+            count = round(p.get_height())
+            barplot.annotate('{}'.format(count), 
+                             (p.get_x() + p.get_width() / 2., count),
+                             ha = 'center', va = 'center', 
+                             xytext = (0, 9), 
+                             textcoords = 'offset points')
+
+        st.pyplot(fig)
+
+        # Additional insightful visualizations can be added below
+        # For example, a pie chart showing the percentage of each emotion
+        emotion_counts = results['Emotion Prediction'].value_counts()
+        fig2, ax2 = plt.subplots()
+        ax2.pie(emotion_counts, labels=emotion_counts.index, autopct='%1.1f%%', startangle=90)
+        ax2.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        ax2.set_title('Emotion Prediction Distribution')
+        st.pyplot(fig2)
