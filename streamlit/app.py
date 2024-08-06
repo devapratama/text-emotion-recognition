@@ -297,11 +297,7 @@ with tab2:
                     try:
                         data = pd.read_csv(
                             uploaded_file,
-                            encoding='utf-8',
-                            delimiter=',',
-                            header=0,
-                            names=['Review'],
-                            engine='python'
+                            encoding='utf-8'
                         )
                     except Exception as e:
                         st.error(f"Error reading CSV file: {e}")
