@@ -286,6 +286,34 @@ with tab2:
             elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 data = pd.read_excel(uploaded_file, engine='openpyxl')
 
+            # Membaca file yang di-upload
+            if uploaded_file is not None:
+                # Menentukan tipe file yang di-upload
+                file_type = uploaded_file.type
+                
+                # Menggunakan pd.read_csv() untuk file CSV
+                if file_type == "text/csv":
+                    # Membaca file CSV dengan opsi tambahan untuk menangani berbagai format
+                    try:
+                        data = pd.read_csv(
+                            uploaded_file,
+                            encoding='utf-8',
+                            delimiter=','
+                            engine='python'
+                        )
+                    except Exception as e:
+                        st.error(f"Error reading CSV file: {e}")
+                
+                # Menggunakan pd.read_excel() untuk file Excel
+                elif file_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                    try:
+                        data = pd.read_excel(uploaded_file, engine='openpyxl')
+                    except Exception as e:
+                        st.error(f"Error reading Excel file: {e}")
+                
+                else:
+                    st.error("Unsupported file type. Please upload a CSV or Excel file.")
+
             if not data.empty:
                 predictions = predict_bulk(model, tokenizer, label_encoder, data)
                 predictions_df = pd.DataFrame(predictions, columns=['Emotion Prediction'])
