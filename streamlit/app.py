@@ -299,6 +299,8 @@ with tab2:
                             uploaded_file,
                             encoding='utf-8',
                             delimiter=',',
+                            header=0,
+                            names=['review'],
                             engine='python'
                         )
                     except Exception as e:
