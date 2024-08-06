@@ -140,9 +140,20 @@ def create_sample_file(file_format):
         output.seek(0)
         return output.getvalue()
 
-# Memuat model dan file pendukung
-model = load_model('transformer_emotion.keras')
-tokenizer, label_encoder = load_support_files('tokenizer.pickle', 'label_encoder.pickle')
+# # Memuat model dan file pendukung
+# model = load_model('transformer_emotion.keras')
+# tokenizer, label_encoder = load_support_files('tokenizer.pickle', 'label_encoder.pickle')
+
+# Define the base path
+base_path = os.path.dirname(__file__)
+# Construct the full path to the model file
+model_path = os.path.join(base_path, 'streamlit', 'transformer_emotion.keras')
+tokenizer_path = os.path.join(base_path, 'streamlit', 'tokenizer.pickle')
+label_encoder_path = os.path.join(base_path, 'streamlit', 'label_encoder.pickle')
+
+# Load the model and support files
+model = load_model(model_path)
+tokenizer, label_encoder = load_support_files(tokenizer_path, label_encoder_path)
 
 # Menambahkan tab
 tab1, tab2 = st.tabs(["Single Prediction", "Bulk Prediction"])
