@@ -301,12 +301,6 @@ with tab2:
                             error_bad_lines=False, 
                             warn_bad_lines=True
                         )
-                    except pd.errors.EmptyDataError:
-                        st.error("Uploaded file is empty.")
-                        return None
-                    except pd.errors.ParserError:
-                        st.error("Error parsing CSV file. Check if the delimiter is correct.")
-                        return None
                     except Exception as e:
                         st.error(f"Error reading CSV file: {e}")
                         return None
