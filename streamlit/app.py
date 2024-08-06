@@ -300,7 +300,7 @@ with tab2:
                             encoding='utf-8',
                             delimiter=',',
                             header=0,
-                            names=['review'],
+                            names=['Review'],
                             engine='python'
                         )
                     except Exception as e:
