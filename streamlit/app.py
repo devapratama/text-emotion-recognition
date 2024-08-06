@@ -299,7 +299,7 @@ with tab2:
                             uploaded_file,
                             encoding='utf-8',
                             error_bad_lines=False, 
-                            warn_bad_lines=True
+                            on_bad_lines=True
                         )
                     except Exception as e:
                         st.error(f"Error reading CSV file: {e}")
