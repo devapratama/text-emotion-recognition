@@ -303,7 +303,6 @@ with tab2:
                         )
                     except Exception as e:
                         st.error(f"Error reading CSV file: {e}")
-                        return None
                 
                 # Menggunakan pd.read_excel() untuk file Excel
                 elif file_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
