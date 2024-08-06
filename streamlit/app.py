@@ -144,12 +144,13 @@ def create_sample_file(file_format):
 # model = load_model('transformer_emotion.keras')
 # tokenizer, label_encoder = load_support_files('tokenizer.pickle', 'label_encoder.pickle')
 
-# Define the base path
-base_path = os.path.dirname(__file__)
-# Construct the full path to the model file
-model_path = os.path.join(base_path, 'streamlit', 'transformer_emotion.keras')
-tokenizer_path = os.path.join(base_path, 'streamlit', 'tokenizer.pickle')
-label_encoder_path = os.path.join(base_path, 'streamlit', 'label_encoder.pickle')
+# Get the directory where the script is located
+base_path = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the full path to the model and support files
+model_path = os.path.join(base_path, 'transformer_emotion.keras')
+tokenizer_path = os.path.join(base_path, 'tokenizer.pickle')
+label_encoder_path = os.path.join(base_path, 'label_encoder.pickle')
 
 # Load the model and support files
 model = load_model(model_path)
