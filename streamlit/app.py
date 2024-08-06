@@ -141,7 +141,7 @@ def create_sample_file(file_format):
         return output.getvalue()
 
 # Memuat model dan file pendukung
-model = load_model('transformer_emotion.keras')
+model = load_model('streamlit/transformer_emotion.keras')
 tokenizer, label_encoder = load_support_files('tokenizer.pickle', 'label_encoder.pickle')
 
 # Menambahkan tab
