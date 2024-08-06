@@ -313,7 +313,7 @@ with tab2:
                     )
 
                 fig, ax = plt.subplots()
-                barplot = sns.countplot(x='Emotion Prediction', data=results, palette='viridis')
+                barplot = sns.countplot(x='Emotion Prediction', data=results, hue='Emotion Prediction', palette='viridis', legend=False, ax=ax)
                 ax.set_title('Distribution of Predicted Emotions')
 
                 for p in barplot.patches:
