@@ -298,8 +298,7 @@ with tab2:
                         data = pd.read_csv(
                             uploaded_file,
                             encoding='utf-8',
-                            error_bad_lines=False, 
-                            on_bad_lines=True
+                            on_bad_lines='skip'
                         )
                     except Exception as e:
                         st.error(f"Error reading CSV file: {e}")
