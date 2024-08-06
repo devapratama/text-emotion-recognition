@@ -298,7 +298,7 @@ with tab2:
                         data = pd.read_csv(
                             uploaded_file,
                             encoding='utf-8',
-                            delimiter=','
+                            delimiter=',',
                             engine='python'
                         )
                     except Exception as e:
