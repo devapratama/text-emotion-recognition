@@ -171,13 +171,97 @@ with tab1:
         else:
             st.write('Silakan masukkan teks untuk prediksi.')
 
+# with tab2:
+#     st.write("Upload a CSV or Excel file for multi predictions.")
+    
+#     with st.container():
+#         col1, col2 = st.columns([1, 2.7])
+#         with col1:
+#             # Tombol untuk mendownload CSV contoh
+#             st.download_button(
+#                 label="Download Sample CSV",
+#                 data=create_sample_file('csv'),
+#                 file_name="sample_input.csv",
+#                 mime="text/csv",
+#                 key="sample-csv"
+#             )
+#         with col2:
+#             # Tombol untuk mendownload Excel contoh
+#             st.download_button(
+#                 label="Download Sample Excel",
+#                 data=create_sample_file('excel'),
+#                 file_name="sample_input.xlsx",
+#                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+#                 key="sample-excel"
+#             )
+
+#     uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx'])
+#     if uploaded_file is not None:
+#         if uploaded_file.type == "text/csv":
+#             data = pd.read_csv(uploaded_file)
+#         elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+#             data = pd.read_excel(uploaded_file, engine='openpyxl')
+
+#         predictions = predict_bulk(model, tokenizer, label_encoder, data)
+#         predictions_df = pd.DataFrame(predictions, columns=['Emotion Prediction'])
+#         results = pd.concat([data, predictions_df], axis=1)
+        
+#         st.write("Results with Predictions:")
+#         st.dataframe(results)
+
+#         # Setelah melakukan prediksi dan memiliki DataFrame `results`
+#         col1, col2 = st.columns([1, 2])
+#         with col1:
+#             # Tombol untuk mendownload hasil prediksi sebagai CSV
+#             st.download_button(
+#                 label="Download Predictions as CSV",
+#                 data=convert_df_to_csv(results),
+#                 file_name='predictions.csv',
+#                 mime='text/csv',
+#                 key="predictions-csv"
+#             )
+#         with col2:
+#             # Tombol untuk mendownload hasil prediksi sebagai Excel
+#             st.download_button(
+#                 label="Download Predictions as Excel",
+#                 data=convert_df_to_excel(results),
+#                 file_name='predictions.xlsx',
+#                 mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+#                 key="predictions-excel"
+#             )
+
+#         # Generate a bar chart of emotion predictions with counts and different colors
+#         fig, ax = plt.subplots()
+#         barplot = sns.countplot(x='Emotion Prediction', data=results, ax=ax, palette='viridis')
+#         ax.set_title('Distribution of Predicted Emotions')
+
+#         # Add count labels to the top of the bars
+#         for p in barplot.patches:
+#             # Round the count to the nearest integer and format
+#             count = round(p.get_height())
+#             barplot.annotate('{}'.format(count), 
+#                              (p.get_x() + p.get_width() / 2., count),
+#                              ha = 'center', va = 'center', 
+#                              xytext = (0, 9), 
+#                              textcoords = 'offset points')
+
+#         st.pyplot(fig)
+
+#         # Additional insightful visualizations can be added below
+#         # For example, a pie chart showing the percentage of each emotion
+#         emotion_counts = results['Emotion Prediction'].value_counts()
+#         fig2, ax2 = plt.subplots()
+#         ax2.pie(emotion_counts, labels=emotion_counts.index, autopct='%1.1f%%', startangle=90)
+#         ax2.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+#         ax2.set_title('Emotion Prediction Distribution')
+#         st.pyplot(fig2)
+
 with tab2:
     st.write("Upload a CSV or Excel file for multi predictions.")
     
     with st.container():
         col1, col2 = st.columns([1, 2.7])
         with col1:
-            # Tombol untuk mendownload CSV contoh
             st.download_button(
                 label="Download Sample CSV",
                 data=create_sample_file('csv'),
@@ -186,7 +270,6 @@ with tab2:
                 key="sample-csv"
             )
         with col2:
-            # Tombol untuk mendownload Excel contoh
             st.download_button(
                 label="Download Sample Excel",
                 data=create_sample_file('excel'),
@@ -197,61 +280,59 @@ with tab2:
 
     uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx'])
     if uploaded_file is not None:
-        if uploaded_file.type == "text/csv":
-            data = pd.read_csv(uploaded_file)
-        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-            data = pd.read_excel(uploaded_file, engine='openpyxl')
+        try:
+            if uploaded_file.type == "text/csv":
+                data = pd.read_csv(uploaded_file)
+            elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                data = pd.read_excel(uploaded_file, engine='openpyxl')
 
-        predictions = predict_bulk(model, tokenizer, label_encoder, data)
-        predictions_df = pd.DataFrame(predictions, columns=['Emotion Prediction'])
-        results = pd.concat([data, predictions_df], axis=1)
-        
-        st.write("Results with Predictions:")
-        st.dataframe(results)
+            if not data.empty:
+                predictions = predict_bulk(model, tokenizer, label_encoder, data)
+                predictions_df = pd.DataFrame(predictions, columns=['Emotion Prediction'])
+                results = pd.concat([data, predictions_df], axis=1)
+                
+                st.write("Results with Predictions:")
+                st.dataframe(results)
 
-        # Setelah melakukan prediksi dan memiliki DataFrame `results`
-        col1, col2 = st.columns([1, 2])
-        with col1:
-            # Tombol untuk mendownload hasil prediksi sebagai CSV
-            st.download_button(
-                label="Download Predictions as CSV",
-                data=convert_df_to_csv(results),
-                file_name='predictions.csv',
-                mime='text/csv',
-                key="predictions-csv"
-            )
-        with col2:
-            # Tombol untuk mendownload hasil prediksi sebagai Excel
-            st.download_button(
-                label="Download Predictions as Excel",
-                data=convert_df_to_excel(results),
-                file_name='predictions.xlsx',
-                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                key="predictions-excel"
-            )
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.download_button(
+                        label="Download Predictions as CSV",
+                        data=convert_df_to_csv(results),
+                        file_name='predictions.csv',
+                        mime='text/csv',
+                        key="predictions-csv"
+                    )
+                with col2:
+                    st.download_button(
+                        label="Download Predictions as Excel",
+                        data=convert_df_to_excel(results),
+                        file_name='predictions.xlsx',
+                        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        key="predictions-excel"
+                    )
 
-        # Generate a bar chart of emotion predictions with counts and different colors
-        fig, ax = plt.subplots()
-        barplot = sns.countplot(x='Emotion Prediction', data=results, ax=ax, palette='viridis')
-        ax.set_title('Distribution of Predicted Emotions')
+                fig, ax = plt.subplots()
+                barplot = sns.countplot(x='Emotion Prediction', data=results, palette='viridis')
+                ax.set_title('Distribution of Predicted Emotions')
 
-        # Add count labels to the top of the bars
-        for p in barplot.patches:
-            # Round the count to the nearest integer and format
-            count = round(p.get_height())
-            barplot.annotate('{}'.format(count), 
-                             (p.get_x() + p.get_width() / 2., count),
-                             ha = 'center', va = 'center', 
-                             xytext = (0, 9), 
-                             textcoords = 'offset points')
+                for p in barplot.patches:
+                    count = round(p.get_height())
+                    barplot.annotate('{}'.format(count), 
+                                     (p.get_x() + p.get_width() / 2., count),
+                                     ha = 'center', va = 'center', 
+                                     xytext = (0, 9), 
+                                     textcoords = 'offset points')
 
-        st.pyplot(fig)
+                st.pyplot(fig)
 
-        # Additional insightful visualizations can be added below
-        # For example, a pie chart showing the percentage of each emotion
-        emotion_counts = results['Emotion Prediction'].value_counts()
-        fig2, ax2 = plt.subplots()
-        ax2.pie(emotion_counts, labels=emotion_counts.index, autopct='%1.1f%%', startangle=90)
-        ax2.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        ax2.set_title('Emotion Prediction Distribution')
-        st.pyplot(fig2)
+                emotion_counts = results['Emotion Prediction'].value_counts()
+                fig2, ax2 = plt.subplots()
+                ax2.pie(emotion_counts, labels=emotion_counts.index, autopct='%1.1f%%', startangle=90)
+                ax2.axis('equal')
+                ax2.set_title('Emotion Prediction Distribution')
+                st.pyplot(fig2)
+            else:
+                st.write("File is empty or not properly formatted.")
+        except Exception as e:
+            st.error(f"An error occurred while processing the file: {e}")
