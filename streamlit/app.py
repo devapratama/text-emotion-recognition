@@ -129,7 +129,7 @@ def read_data(uploaded_file):
         return None
     
 def create_sample_file(file_format):
-    sample_data = 'Review': [
+    sample_data = {'Review': [
         'Saya akan merekomendasikan ini kepada teman.',
         'Makanan tidak enak dan terlalu mahal.',
         'Sangat mudah digunakan dan diatur.',
@@ -149,7 +149,7 @@ def create_sample_file(file_format):
         'Tidak sesuai dengan deskripsi.',
         'Sangat kecewa dengan pembelian ini.',
         'Produk ini lebih dari yang saya harapkan.'
-    ]
+    ]}
     df_sample = pd.DataFrame(sample_data)
 
     if file_format == 'csv':
