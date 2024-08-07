@@ -11,7 +11,7 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Definisi lapisan kustom dengan dekorator untuk serialisasi
+# Definisi lapisan custom dengan dekorator untuk serialisasi
 @tf.keras.utils.register_keras_serializable()
 class TransformerBlock(layers.Layer):
     def __init__(self, embed_dim, num_heads, ff_dim, rate=0.1, **kwargs):
@@ -74,7 +74,7 @@ class TokenAndPositionEmbedding(layers.Layer):
         })
         return config
 
-# Fungsi untuk memuat model dengan lapisan kustom
+# Fungsi untuk memuat model dengan lapisan custom
 def load_model(model_path):
     custom_objects = {
         "TokenAndPositionEmbedding": TokenAndPositionEmbedding,
@@ -101,7 +101,7 @@ def predict_emotion(text, model, tokenizer, label_encoder):
     return label[0]
 
 def predict_bulk(model, tokenizer, label_encoder, data):
-    sequences = tokenizer.texts_to_sequences(data['Review'].tolist())  # Pastikan ini sesuai dengan nama kolom teks Anda
+    sequences = tokenizer.texts_to_sequences(data['Review'].tolist()) 
     padded_sequences = pad_sequences(sequences, maxlen=40)
     predictions = model.predict(padded_sequences)
     prediction_indices = np.argmax(predictions, axis=1)
@@ -140,11 +140,7 @@ def create_sample_file(file_format):
             df_sample.to_excel(writer, index=False)
         output.seek(0)
         return output.getvalue()
-
-# # Memuat model dan file pendukung
-# model = load_model('transformer_emotion.keras')
-# tokenizer, label_encoder = load_support_files('tokenizer.pickle', 'label_encoder.pickle')
-
+        
 # Get the directory where the script is located
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -153,108 +149,20 @@ model_path = os.path.join(base_path, 'transformer_emotion.keras')
 tokenizer_path = os.path.join(base_path, 'tokenizer.pickle')
 label_encoder_path = os.path.join(base_path, 'label_encoder.pickle')
 
-# Load the model and support files
 model = load_model(model_path)
 tokenizer, label_encoder = load_support_files(tokenizer_path, label_encoder_path)
 
-# Menambahkan tab
 tab1, tab2 = st.tabs(["Single Prediction", "Bulk Prediction"])
 
 with tab1:
-    # Kode untuk single prediction
     st.title('Prediksi Emosi dari Teks Review')
     user_input = st.text_area("Masukkan teks review di sini:")
     if st.button('Prediksi'):
         if user_input:
             predicted_emotion = predict_emotion(user_input, model, tokenizer, label_encoder)
-            st.write(f'Emosi yang diprediksi: **{predicted_emotion}**')  # Pastikan ini dieksekusi dengan benar
+            st.write(f'Emosi yang diprediksi: **{predicted_emotion}**')
         else:
             st.write('Silakan masukkan teks untuk prediksi.')
-
-# with tab2:
-#     st.write("Upload a CSV or Excel file for multi predictions.")
-    
-#     with st.container():
-#         col1, col2 = st.columns([1, 2.7])
-#         with col1:
-#             # Tombol untuk mendownload CSV contoh
-#             st.download_button(
-#                 label="Download Sample CSV",
-#                 data=create_sample_file('csv'),
-#                 file_name="sample_input.csv",
-#                 mime="text/csv",
-#                 key="sample-csv"
-#             )
-#         with col2:
-#             # Tombol untuk mendownload Excel contoh
-#             st.download_button(
-#                 label="Download Sample Excel",
-#                 data=create_sample_file('excel'),
-#                 file_name="sample_input.xlsx",
-#                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#                 key="sample-excel"
-#             )
-
-#     uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx'])
-#     if uploaded_file is not None:
-#         if uploaded_file.type == "text/csv":
-#             data = pd.read_csv(uploaded_file)
-#         elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-#             data = pd.read_excel(uploaded_file, engine='openpyxl')
-
-#         predictions = predict_bulk(model, tokenizer, label_encoder, data)
-#         predictions_df = pd.DataFrame(predictions, columns=['Emotion Prediction'])
-#         results = pd.concat([data, predictions_df], axis=1)
-        
-#         st.write("Results with Predictions:")
-#         st.dataframe(results)
-
-#         # Setelah melakukan prediksi dan memiliki DataFrame `results`
-#         col1, col2 = st.columns([1, 2])
-#         with col1:
-#             # Tombol untuk mendownload hasil prediksi sebagai CSV
-#             st.download_button(
-#                 label="Download Predictions as CSV",
-#                 data=convert_df_to_csv(results),
-#                 file_name='predictions.csv',
-#                 mime='text/csv',
-#                 key="predictions-csv"
-#             )
-#         with col2:
-#             # Tombol untuk mendownload hasil prediksi sebagai Excel
-#             st.download_button(
-#                 label="Download Predictions as Excel",
-#                 data=convert_df_to_excel(results),
-#                 file_name='predictions.xlsx',
-#                 mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-#                 key="predictions-excel"
-#             )
-
-#         # Generate a bar chart of emotion predictions with counts and different colors
-#         fig, ax = plt.subplots()
-#         barplot = sns.countplot(x='Emotion Prediction', data=results, ax=ax, palette='viridis')
-#         ax.set_title('Distribution of Predicted Emotions')
-
-#         # Add count labels to the top of the bars
-#         for p in barplot.patches:
-#             # Round the count to the nearest integer and format
-#             count = round(p.get_height())
-#             barplot.annotate('{}'.format(count), 
-#                              (p.get_x() + p.get_width() / 2., count),
-#                              ha = 'center', va = 'center', 
-#                              xytext = (0, 9), 
-#                              textcoords = 'offset points')
-
-#         st.pyplot(fig)
-
-#         # Additional insightful visualizations can be added below
-#         # For example, a pie chart showing the percentage of each emotion
-#         emotion_counts = results['Emotion Prediction'].value_counts()
-#         fig2, ax2 = plt.subplots()
-#         ax2.pie(emotion_counts, labels=emotion_counts.index, autopct='%1.1f%%', startangle=90)
-#         ax2.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-#         ax2.set_title('Emotion Prediction Distribution')
-#         st.pyplot(fig2)
 
 with tab2:
     st.write("Upload a CSV or Excel file for multi predictions.")
@@ -286,14 +194,10 @@ with tab2:
             elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 data = pd.read_excel(uploaded_file, engine='openpyxl')
 
-            # Membaca file yang di-upload
             if uploaded_file is not None:
-                # Menentukan tipe file yang di-upload
                 file_type = uploaded_file.type
                 
-                # Menggunakan pd.read_csv() untuk file CSV
                 if file_type == "text/csv":
-                    # Membaca file CSV dengan opsi tambahan untuk menangani berbagai format
                     try:
                         data = pd.read_csv(
                             uploaded_file,
@@ -303,13 +207,12 @@ with tab2:
                     except Exception as e:
                         st.error(f"Error reading CSV file: {e}")
                 
-                # Menggunakan pd.read_excel() untuk file Excel
                 elif file_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                     try:
                         data = pd.read_excel(uploaded_file, engine='openpyxl')
                     except Exception as e:
                         st.error(f"Error reading Excel file: {e}")
-                
+
                 else:
                     st.error("Unsupported file type. Please upload a CSV or Excel file.")
 
