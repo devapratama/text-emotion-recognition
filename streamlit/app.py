@@ -129,7 +129,27 @@ def read_data(uploaded_file):
         return None
     
 def create_sample_file(file_format):
-    sample_data = {'Review': ['Saya sangat senang dengan layannya', 'Produk ini sangat mengecewakan', 'Pengiriman cepat, terima kasih!']}
+    sample_data = 'Review': [
+        'Saya akan merekomendasikan ini kepada teman.',
+        'Makanan tidak enak dan terlalu mahal.',
+        'Sangat mudah digunakan dan diatur.',
+        'Saya merasa tertipu dengan produk ini.',
+        'Kamera ini memiliki fitur yang hebat.',
+        'Akan membeli lagi dari penjual ini.',
+        'Pengembalian dana yang mudah dan layanan hebat.',
+        'Pengiriman cepat, terima kasih!',
+        'Pelayanan yang ramah dan responsif.',
+        'Kualitas suara dari headphone ini luar biasa.',
+        'Harga terjangkau dan kualitas bagus.',
+        'Produk ini benar-benar memuaskan.',
+        'Tidak bernilai uang yang saya bayar.',
+        'Buku ini sangat membosankan dan tidak informatif.',
+        'Pengiriman terlambat dan paket rusak.',
+        'Instruksi yang disertakan tidak jelas.',
+        'Tidak sesuai dengan deskripsi.',
+        'Sangat kecewa dengan pembelian ini.',
+        'Produk ini lebih dari yang saya harapkan.'
+    ]
     df_sample = pd.DataFrame(sample_data)
 
     if file_format == 'csv':
@@ -189,12 +209,6 @@ with tab2:
     uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx'])
     if uploaded_file is not None:
         try:
-            # if uploaded_file.type == "text/csv":
-            #     data = pd.read_csv(uploaded_file)
-            # elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-            #     data = pd.read_excel(uploaded_file, engine='openpyxl')
-
-            # if uploaded_file is not None:
             file_type = uploaded_file.type
                 
             if file_type == "text/csv":
