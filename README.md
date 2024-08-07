@@ -16,7 +16,7 @@
 - [References](#references)
 
 ## Background
-In the rapidly evolving landscape of e-commerce, understanding customer emotions has become paramount for enhancing customer satisfaction and refining business strategies. Traditional methods of sentiment analysis often fall short in accurately detecting the nuanced emotions expressed in customer reviews. This project leverages the power of Transformer-based deep learning architectures to provide a sophisticated solution for emotion recognition in Indonesian-language e-commerce reviews.
+In the rapidly evolving landscape of e-commerce, understanding customer emotions has become paramount for enhancing customer satisfaction and refining business strategies. Traditional methods of sentiment analysis often fall short in accurately detecting the nuanced emotions expressed in customer reviews. This project uses Transformer-based deep learning techniques to provide a solution for recognizing emotions in Indonesian e-commerce reviews.
 
 ## Project Goals
 - Develop a robust and accurate model to classify emotions from customer reviews.
