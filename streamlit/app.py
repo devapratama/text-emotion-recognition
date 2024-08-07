@@ -189,32 +189,32 @@ with tab2:
     uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx'])
     if uploaded_file is not None:
         try:
-            if uploaded_file.type == "text/csv":
-                data = pd.read_csv(uploaded_file)
-            elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                data = pd.read_excel(uploaded_file, engine='openpyxl')
+            # if uploaded_file.type == "text/csv":
+            #     data = pd.read_csv(uploaded_file)
+            # elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            #     data = pd.read_excel(uploaded_file, engine='openpyxl')
 
-            if uploaded_file is not None:
-                file_type = uploaded_file.type
+            # if uploaded_file is not None:
+            file_type = uploaded_file.type
                 
-                if file_type == "text/csv":
-                    try:
-                        data = pd.read_csv(
-                            uploaded_file,
-                            encoding='utf-8',
-                            on_bad_lines='skip'
-                        )
-                    except Exception as e:
-                        st.error(f"Error reading CSV file: {e}")
+            if file_type == "text/csv":
+                try:
+                    data = pd.read_csv(
+                        uploaded_file,
+                        encoding='utf-8',
+                        on_bad_lines='skip'
+                    )
+                except Exception as e:
+                    st.error(f"Error reading CSV file: {e}")
                 
-                elif file_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                    try:
-                        data = pd.read_excel(uploaded_file, engine='openpyxl')
-                    except Exception as e:
-                        st.error(f"Error reading Excel file: {e}")
+            elif file_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                try:
+                    data = pd.read_excel(uploaded_file, engine='openpyxl')
+                except Exception as e:
+                    st.error(f"Error reading Excel file: {e}")
 
-                else:
-                    st.error("Unsupported file type. Please upload a CSV or Excel file.")
+            else:
+                st.error("Unsupported file type. Please upload a CSV or Excel file.")
 
             if not data.empty:
                 predictions = predict_bulk(model, tokenizer, label_encoder, data)
